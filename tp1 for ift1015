@@ -1,7 +1,7 @@
 couleur = ["#fff", "#000", "#f00", "#ff0", "#0f0", "#00f", "#f0f", "#888"]
 largeur = 180
 hauteur = 120
-longueurCarre = 12
+taille = 12
 longueurCadre = 1
 espace = 6
 nombreCouleur = 8
@@ -10,7 +10,7 @@ def carre(x, y, largeur, hauteur, i):
     fillRectangle(x, y, largeur, hauteur, couleur[i])
     
 def boutonEffacer(x, y):
-    fillRectangle(x, x, longueurCarre, longueurCarre, couleur[0])
+    fillRectangle(x, x, taille, taille, couleur[0])
     for i in range(x, y):
         setPixel(i, x, couleur[2])
         setPixel(i, y - 1, couleur[2])
@@ -23,15 +23,14 @@ def cadre(x, y, largeur, hauteur):
 def fenetre(largeur, hauteur):
     i = -1
     coordonnerDepart = espace - 1
-    coordonnerFinal = coordonnerDepart + longueurCarre
-    valeurA = longueurCarre + longueurCadre * 2
-    valeurB = longueurCarre + nombreCouleur
+    coordonnerFinal = coordonnerDepart + taille
+    valeurA = taille + longueurCadre * 2
+    valeurB = taille + nombreCouleur
     fillRectangle(0, 0, largeur, hauteur, couleur[0])
     fillRectangle(0, 0, largeur, 24, couleur[7])
     for x in range(coordonnerDepart, nombreCouleur * valeurB, valeurB):
         cadre(x - 1, coordonnerDepart - 1, valeurA, valeurA)
-        carre(x, coordonnerDepart, longueurCarre, longueurCarre, i)
+        carre(x, coordonnerDepart, taille, taille, i)
         i += 1
     boutonEffacer(coordonnerDepart, coordonnerFinal)
-    
     
