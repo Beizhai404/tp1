@@ -1,6 +1,4 @@
 couleur = ["#fff", "#000", "#f00", "#ff0", "#0f0", "#00f", "#f0f", "#888"]
-largeur = 180
-hauteur = 120
 taille = 12
 longueurCadre = 1
 espace = 6
@@ -26,6 +24,7 @@ def fenetre(largeur, hauteur):
     coordonnerFinal = coordonnerDepart + taille
     valeurA = taille + longueurCadre * 2
     valeurB = taille + nombreCouleur
+    setScreenMode(largeur, hauteur)
     fillRectangle(0, 0, largeur, hauteur, couleur[0])
     fillRectangle(0, 0, largeur, 24, couleur[7])
     for x in range(coordonnerDepart, nombreCouleur * valeurB, valeurB):
