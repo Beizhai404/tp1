@@ -4,34 +4,32 @@ longueurCadre = 1
 espace = 6
 nombreCouleur = 8
 
-def carre(x, y, largeur, hauteur, i):
-    fillRectangle(x, y, largeur, hauteur, couleur[i])
+def carre(x, y, largeur, hauteur, numbre):
+    fillRectangle(x, y, largeur, hauteur, couleur[numbre])
     
 def boutonEffacer(x, y):
-    fillRectangle(x, x, taille, taille, couleur[0])
+    fillRectangle(x, x, taille, taille, "#fff")
     for i in range(x, y):
-        setPixel(i, x, couleur[2])
-        setPixel(i, y - 1, couleur[2])
+        setPixel(i, x, "#f00")
+        setPixel(i, y - 1, "#f00")
         x += 1
         y -= 1
         
 def cadre(x, y, largeur, hauteur):
-    fillRectangle(x, y, largeur, hauteur, couleur[1])
+    fillRectangle(x, y, largeur, hauteur, "#000")
         
 def fenetre(largeur, hauteur):
     i = -1
-    coordonnerDepart = espace - 1
-    coordonnerFinal = coordonnerDepart + taille
-    valeurA = taille + longueurCadre * 2
-    valeurB = taille + nombreCouleur
+    longueurBouton = taille + longueurCadre * 2
+    coordonneeDist = taille + espace
     setScreenMode(largeur, hauteur)
-    fillRectangle(0, 0, largeur, hauteur, couleur[0])
-    fillRectangle(0, 0, largeur, 24, couleur[7])
-    for x in range(coordonnerDepart, nombreCouleur * valeurB, valeurB):
-        cadre(x - 1, coordonnerDepart - 1, valeurA, valeurA)
-        carre(x, coordonnerDepart, taille, taille, i)
+    fillRectangle(0, 0, largeur, hauteur, "#fff")
+    fillRectangle(0, 0, largeur, 24, "#888")
+    for x in range(espace, nombreCouleur * coordonneeDist, coordonneeDist):
+        cadre(x - 1, espace - 1, longueurBouton, longueurBouton)
+        carre(x, espace, taille, taille, i)
         i += 1
-    boutonEffacer(coordonnerDepart, coordonnerFinal)
+    boutonEffacer(espace, espace + taille)
     
 def creerBoutons(couleurs, taille, espace, couleurEffacer):
     tabFinal=[]
