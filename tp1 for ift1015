@@ -75,20 +75,20 @@ def creerBoutons(couleurs, taille, espace, couleurEffacer):
     -----
     
     
-    def creerBoutons(couleurs, taille, espace, couleurEffacer):
+def creerBoutons(couleurs, taille, espace, couleurEffacer):
     distCoins = taille + espace
-    tabReset = [struct(coin1 = struct(x = distCoins + espace, y = espace),
-                coin2 = struct(x = distCoins * 2, y = distCoins),
-                couleur = couleurEffacer,
-                effacer = True)]
+    tab = [struct(coin1 = struct(x = distCoins + espace, y = espace),
+           coin2 = struct(x = distCoins * 2, y = distCoins),
+           couleur = couleurEffacer,
+           effacer = True)]
     numbre = couleur.index(couleurs[0])
     if numbre == 0:
-        tabReset.extend(tabReset)
+        tab.extend(tab)
     else:
         tabFinal = [struct(coin1 = struct(x = espace + \
                                  (numbre + 1) * distCoins, y = espace),
                     coin2 = struct(x = distCoins*(numbre + 2), y = distCoins),
                     couleur = couleurs[0],
                     effacer = False)]
-        tabReset.extend(tabFinal)
-    return tabReset
+        tab.extend(tabFinal)
+    return tab
