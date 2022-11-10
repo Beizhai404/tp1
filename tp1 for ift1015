@@ -92,3 +92,13 @@ def creerBoutons(couleurs, taille, espace, couleurEffacer):
                     effacer = False)]
         tab.extend(tabFinal)
     return tab
+    
+def trouverBouton(boutons, position):
+    coin1_x = boutons[1].coin1.x
+    coin1_y = boutons[1].coin1.y
+    coin2_x = boutons[1].coin2.x
+    coin2_y = boutons[1].coin2.y
+    if coin1_x <= position[0] <= coin2_x and coin1_y <= position[1] <= coin2_y:
+        return True
+    else:
+        return None
