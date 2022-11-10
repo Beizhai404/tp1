@@ -120,6 +120,7 @@ def boutonSouris(x):
 
 #It works(print the rectangle) but not finished and not perfect, I think its a bit repetitive, and i dindn't do the tableu "imageOriginale"
 #I'll try to fix it, it also would be great if you want to revise them.
+#For example : you can try them with "print(dessinerRectangleFlottant([], (90,60), "#f00"))"
 def dessinerRectangleFlottant(imageOriginale, debut, couleur):
     while True:
         souris = getMouse()
