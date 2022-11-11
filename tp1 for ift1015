@@ -118,32 +118,45 @@ def boutonSouris(x):
         sleep(0.01)
 
 
-#It works(print the rectangle) but not finished and not perfect, I think its a bit repetitive, and i dindn't do the tableu "imageOriginale"
-#I'll try to fix it, it also would be great if you want to revise them.
-#For example : you can try them with "print(dessinerRectangleFlottant([], (90,60), "#f00"))"
+def rectangle(souris, largeur, hauteur, debut, couleur):
+    if souris.x <= debut[0] and hauteurMenu <= souris.y <= debut[1]:
+        fillRectangle(souris.x, souris.y, largeur, hauteur,couleur)
+    elif souris.x <= debut[0] and souris.y > debut[1]:
+        fillRectangle(souris.x, debut[1], largeur, hauteur,couleur)
+    elif hauteurMenu <= souris.y <= debut[1]:
+        fillRectangle(debut[0], souris.y, largeur, hauteur, couleur)
+    elif souris.y > debut[1]:
+        fillRectangle(debut[0], debut[1], largeur, hauteur,couleur)
+    elif souris.x <= debut[0] and souris.y < hauteurMenu:
+        hauteur = abs(hauteurMenu - debut[1]) + 1
+        fillRectangle(souris.x, hauteurMenu, largeur, hauteur,couleur)
+    else:
+        hauteur = abs(hauteurMenu - debut[1]) + 1
+        fillRectangle(debut[0], hauteurMenu, largeur, hauteur,couleur)
+        
+def imageOriginale():
+    imageOriginale = []
+    for x in range(0,180):
+        imageOriginale.append([])
+        for y in range(0,120):
+            imageOriginale[x].append([])
+    return imageOriginale  
+
 def dessinerRectangleFlottant(imageOriginale, debut, couleur):
+    tab = imageOriginale
     while True:
         souris = getMouse()
         largeur = abs(souris.x - debut[0])+1
         hauteur = abs(souris.y - debut[1])+1
         if souris.button == 1:
             clear()
-            if souris.x <= debut[0] and hauteurMenu <= souris.y <= debut[1]:
-                fillRectangle(souris.x, souris.y, largeur, hauteur,couleur)
-            elif souris.x <= debut[0] and souris.y > debut[1]:
-                fillRectangle(souris.x, debut[1], largeur, hauteur,couleur)
-            elif hauteurMenu <= souris.y <= debut[1]:
-                fillRectangle(debut[0], souris.y, largeur, hauteur, couleur)
-            elif souris.y > debut[1]:
-                fillRectangle(debut[0], debut[1], largeur, hauteur,couleur)
-            elif souris.x <= debut[0] and souris.y < hauteurMenu:
-                hauteur = abs(hauteurMenu - debut[1])+1
-                fillRectangle(souris.x, hauteurMenu, largeur, hauteur,couleur)
-            else:
-                hauteur = abs(hauteurMenu - debut[1])+1
-                fillRectangle(debut[0], hauteurMenu, largeur, hauteur,couleur)
+            rectangle(souris, largeur, hauteur, debut, couleur)
             sleep(0.01)
-        if souris.button == 0 :
+        if souris.button == 0:
+            for x in range(min(debut[0],souris.x), max(debut[0],souris.x) + 1):
+                for y in range(min(debut[1],souris.y),\
+                               max(debut[1],souris.y) + 1):
+                    tab[x][y] = getPixel(x, y)
             boutonSouris(1)
             
             ----- draft 2 of 3.3 -----
