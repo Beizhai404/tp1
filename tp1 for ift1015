@@ -145,3 +145,39 @@ def dessinerRectangleFlottant(imageOriginale, debut, couleur):
             sleep(0.01)
         if souris.button == 0 :
             boutonSouris(1)
+            
+            ----- draft 2 of 3.3 -----
+            #Nice code btw. I modified very small things, trying to cover every situation. If was not necessary, dont hesitate to revert anything.
+            Im working right now on how to integrate imageOriginale to the code so it can be well returned 
+
+def dessinerRectangleFlottant(imageOriginale, debut, couleur):
+    imageOriginale=[["#fff"]*largeur]*hauteur
+    while True:
+        souris = getMouse()
+        largeur = abs(souris.x - debut[0])+1
+        hauteur = abs(souris.y - debut[1])+1
+        if souris.button == 1:
+            clear()
+            if hauteurMenu <= souris.y:
+                if souris.x <= debut[0] and souris.y <= debut[1]:
+                    fillRectangle(souris.x, souris.y, largeur, hauteur,couleur)
+                elif souris.x <= debut[0] and souris.y > debut[1]:
+                    fillRectangle(souris.x, debut[1], largeur, hauteur,couleur)
+                elif souris.x >= debut[0] and souris.y <= debut[1]:
+                    fillRectangle(debut[0], debut[1], largeur, hauteur,couleur)
+                elif souris.x >= debut[0] and souris.y > debut[1]:
+                    fillRectangle(souris.x, debut[1], largeur, hauteur,couleur)
+                elif souris.y <= debut[1]:
+                    fillRectangle(debut[0], souris.y, largeur, hauteur, couleur)
+                elif souris.y > debut[1]:
+                    fillRectangle(debut[0], debut[1], largeur, hauteur,couleur)    
+            else:
+                hauteur = abs(hauteurMenu - debut[1])+1
+                if souris.x<= debut[0]:
+                    fillRectangle(souris.x,hauteurMenu,largeur,hauteur,couleur)
+                if souris.x>=debut[0]:
+                    fillRectangle(debut[0],hauteurMenu,largeur,hauteur,couleur)
+            sleep(0.01)
+        if souris.button == 0 :
+            boutonSouris(1)
+            --------------
