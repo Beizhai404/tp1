@@ -158,7 +158,17 @@ def dessinerRectangleFlottant(imageOriginale, debut, couleur):
                                max(debut[1],souris.y) + 1):
                     tab[x][y] = getPixel(x, y)
             boutonSouris(1)
-            
+
+def restaurerImage(imageOriginale, rectangle):
+    tab = imageOriginale
+    coin1 = rectangle.coin1
+    coin2 = rectangle.coin2
+    for x in range(coin1.x, coin2.x + 1):
+        for y in range(coin1.y, coin2.y):
+            tab[x][y] = getPixel(x, y)
+    return tab
+    
+    
             ----- draft 2 of 3.3 -----
             #Nice code btw. I modified very small things, trying to cover every situation. If was not necessary, dont hesitate to revert anything.
             Im working right now on how to integrate imageOriginale to the code so it can be well returned 
