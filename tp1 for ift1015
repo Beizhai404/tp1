@@ -204,3 +204,54 @@ def dessinerRectangleFlottant(imageOriginale, debut, couleur):
         if souris.button == 0 :
             boutonSouris(1)
             --------------
+
+#DRAFT FOR 3.6 AND 3.7------------------------------- 
+def ajouterRectangle(image,rectangle,couleur):
+    image=imageOriginale
+    coin1 = rectangle.coin1
+    coin2 = rectangle.coin2
+    for x in range(coin1.x, coin2.x + 1):
+        for y in range(coin1.y, coin2.y):
+            image[x][y] = setPixel(x, y)
+    return image
+
+couleurChoisie="#fff"
+
+def traiterProchainClic(boutons):
+    tab=imageOriginale
+    while True:
+        souris=getMouse()           
+        
+        if souris.button==1 and souris.y>hauteurMenu:
+            dessinerRectangleFlottant(tab, debut, couleur)
+
+        elif souris.button==1 and souris.y<=hauteurMenu:
+            position=struct(x=souris.x,y=souris.y)
+            for _ in range(boutons):
+                trouverBoutons(boutons,position)
+                if None:
+                    break
+                elif True:
+                    return boutons
+                if boutons==0:
+                    clear()
+                elif boutons==1:
+                    couleurChoisie:couleur[0]
+                elif boutons==2:
+                    couleurChoisie:couleur[1]
+                elif boutons==3:
+                    couleurChoisie:couleur[2]
+                elif boutons==4:
+                    couleurChoisie:couleur[3]
+                elif boutons==5:
+                    couleurChoisie:couleur[4]        
+                elif boutons==6:
+                    couleurChoisie:couleur[5]
+                elif boutons==7:
+                    couleurChoisie:couleur[6]
+                elif boutons==8:
+                    couleurChoisie:couleur[7]        
+                              
+        elif souris.button==0:
+            boutonSouris(1)
+--------------------------------------
