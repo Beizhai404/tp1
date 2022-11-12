@@ -136,9 +136,9 @@ def rectangle(souris, largeur, hauteur, debut, couleur):
         
 def imageOriginale():
     imageOriginale = []
-    for x in range(0,180):
+    for x in range(0, largeur):
         imageOriginale.append([])
-        for y in range(0,120):
+        for y in range(0, hauteur):
             imageOriginale[x].append([])
     return imageOriginale  
 
