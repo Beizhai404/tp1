@@ -143,7 +143,7 @@ def ajouterRectangle(image, rectangle, couleur):
     return image
 
 
-def traiterProchainClic():
+def traiterProchainClic(boutons):
     couleur = couleurDefaut
     tab = imageOriginale()
     while True:
