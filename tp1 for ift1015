@@ -6,20 +6,25 @@ longueurCadre = 1
 espace = 6
 nombreCouleur = 8
 hauteurMenu = 24
+couleurDefaut = "#fff"
+
 
 def carre(x, y, largeur, hauteur, numbre):
     fillRectangle(x, y, largeur, hauteur, couleur[numbre])
     
+    
 def boutonEffacer(x, y):
-    fillRectangle(x, x, taille, taille, "#fff")
+    fillRectangle(x, x, taille, taille, couleurDefaut)
     for i in range(x, y):
         setPixel(i, x, "#f00")
         setPixel(i, y - 1, "#f00")
         x += 1
         y -= 1
 
+
 def clear():
-    fillRectangle(0, hauteurMenu, largeur, hauteur - hauteurMenu, "#fff")
+    fillRectangle(0, hauteurMenu, largeur, hauteur-hauteurMenu, couleurDefaut)
+        
         
 def cadre(x, y, largeur, hauteur):
     fillRectangle(x, y, largeur, hauteur, "#000")
@@ -30,56 +35,13 @@ def fenetre(largeur, hauteur):
     longueurBouton = taille + longueurCadre * 2
     distCoins = taille + espace
     setScreenMode(largeur, hauteur)
-    fillRectangle(0, 0, largeur, hauteur, "#fff")
+    fillRectangle(0, 0, largeur, hauteur, couleurDefaut)
     fillRectangle(0, 0, largeur, hauteurMenu, "#888")
     for x in range(espace, nombreCouleur * distCoins, distCoins):
         cadre(x - 1, espace - 1, longueurBouton, longueurBouton)
         carre(x, espace, taille, taille, i)
         i += 1
     boutonEffacer(espace, espace + taille)
-    
-def creerBoutons(couleurs, taille, espace, couleurEffacer):
-    tabFinal=[]
-    #only for empty button
-    coin1=struct(x=espace, y=espace)
-    coin2=struct(x=espace+taille, y=espace+taille)
-    couleur=couleurEffacer
-    effacer=True
-    tabReset=[struct(coin1,coin2,couleur,effacer)]
-    
-    tabFinal.extend(tabReset)
-    
-    --- #3.1 first draft ---
-def creerBoutons(couleurs, taille, espace, couleurEffacer):
-    tabFinal=[]
-    coin1=struct(x=espace, y=espace) 
-    coin2=struct(x=espace+taille, y=espace+taille)
-    couleur=couleurEffacer
-    effacer=True
-    tabReset=[struct(coin1,coin2,couleur,effacer)] #only for reset button
-    
-    tabFinal.extend(tabReset)
-    
-    def tabCouleur(couleurs, taille, espace):
-        
-        temp=len(couleurs)             #temporary variable 1 (for the range) for the number of colors displayed
-        distCoins=taille+espace        #distance between each upper left corner on x axis
-        temp2=0                        #temporary variable 2 (for the elements of the table couleurs)
-        couleur=couleurs.pop(0+temp2)  #to pass every color
-        
-        for _ in range(1,temp+1): #starting at one cauz first color table (excluding reset button)
-            xPos=distCoins*_           
-            coin1=struct(x=xPos+espace, y=espace)   #only way found that gets the upper left corner
-            coin2=struct(x=xPos+distCoins,y=espace+taille) #since its always upper left corner position + espace+taille
-            couleur=couleur 
-            effacer=False #since there's only one reset button, always false for the colors
-            temp2+=1      #so we pass to the next color. should stop when the table is empty?
-            tabCouleur=[struct(coin1,coin2,couleur,effacer)] #gives us the color tab
-            tabFinal.extend(tabCouleur)  #we add this color to the final tab, that contains the reset button and each color.
-                   
-    return tabFinal
-    
-    -----
     
     
 def creerBoutons(couleurs, taille, espace, couleurEffacer):
@@ -100,24 +62,27 @@ def creerBoutons(couleurs, taille, espace, couleurEffacer):
         tab.extend(tabFinal)
     return tab
     
+
 def trouverBouton(boutons, position):
     coin1_x = boutons[1].coin1.x
     coin1_y = boutons[1].coin1.y
     coin2_x = boutons[1].coin2.x
     coin2_y = boutons[1].coin2.y
-    if coin1_x <= position[0] <= coin2_x and coin1_y <= position[1] <= coin2_y:
+    if coin1_x <= position[0] <= coin2_x and coin1_y <= position[1] <= coin2_y\
+                            and boutons[1].couleur != "#888":
         return True
     else:
         return None
-
+    
+    
 def boutonSouris(x):
     while True :
         souris = getMouse()
         if souris.button == x:
             return souris
         sleep(0.01)
-
-
+         
+         
 def rectangle(souris, largeur, hauteur, debut, couleur):
     if souris.x <= debut[0] and hauteurMenu <= souris.y <= debut[1]:
         fillRectangle(souris.x, souris.y, largeur, hauteur,couleur)
@@ -134,13 +99,16 @@ def rectangle(souris, largeur, hauteur, debut, couleur):
         hauteur = abs(hauteurMenu - debut[1]) + 1
         fillRectangle(debut[0], hauteurMenu, largeur, hauteur,couleur)
         
+        
 def imageOriginale():
     imageOriginale = []
-    for x in range(0, largeur):
+    for x in range(0,largeur):
         imageOriginale.append([])
-        for y in range(0, hauteur):
+        for y in range(0,hauteur):
             imageOriginale[x].append([])
     return imageOriginale  
+
+
 
 def dessinerRectangleFlottant(imageOriginale, debut, couleur):
     tab = imageOriginale
@@ -153,105 +121,46 @@ def dessinerRectangleFlottant(imageOriginale, debut, couleur):
             rectangle(souris, largeur, hauteur, debut, couleur)
             sleep(0.01)
         if souris.button == 0:
-            for x in range(min(debut[0],souris.x), max(debut[0],souris.x) + 1):
-                for y in range(min(debut[1],souris.y),\
-                               max(debut[1],souris.y) + 1):
-                    tab[x][y] = getPixel(x, y)
-            boutonSouris(1)
-
+            break
+ 
+ 
 def restaurerImage(imageOriginale, rectangle):
     tab = imageOriginale
     coin1 = rectangle.coin1
     coin2 = rectangle.coin2
     for x in range(coin1.x, coin2.x + 1):
-        for y in range(coin1.y, coin2.y):
-            tab[x][y] = getPixel(x, y)
-    return tab
+        for y in range(coin1.y, coin2.y + 1):
+            setPixel(x, y, tab[x][y])
     
     
-            ----- draft 2 of 3.3 -----
-            #Nice code btw. I modified very small things, trying to cover every situation. If was not necessary, dont hesitate to revert anything.
-            Im working right now on how to integrate imageOriginale to the code so it can be well returned 
-
-def dessinerRectangleFlottant(imageOriginale, debut, couleur):
-    imageOriginale=[["#fff"]*largeur]*hauteur
-    while True:
-        souris = getMouse()
-        largeur = abs(souris.x - debut[0])+1
-        hauteur = abs(souris.y - debut[1])+1
-        if souris.button == 1:
-            clear()
-            if hauteurMenu <= souris.y:
-                if souris.x <= debut[0] and souris.y <= debut[1]:
-                    fillRectangle(souris.x, souris.y, largeur, hauteur,couleur)
-                elif souris.x <= debut[0] and souris.y > debut[1]:
-                    fillRectangle(souris.x, debut[1], largeur, hauteur,couleur)
-                elif souris.x >= debut[0] and souris.y <= debut[1]:
-                    fillRectangle(debut[0], debut[1], largeur, hauteur,couleur)
-                elif souris.x >= debut[0] and souris.y > debut[1]:
-                    fillRectangle(souris.x, debut[1], largeur, hauteur,couleur)
-                elif souris.y <= debut[1]:
-                    fillRectangle(debut[0], souris.y, largeur, hauteur, couleur)
-                elif souris.y > debut[1]:
-                    fillRectangle(debut[0], debut[1], largeur, hauteur,couleur)    
-            else:
-                hauteur = abs(hauteurMenu - debut[1])+1
-                if souris.x<= debut[0]:
-                    fillRectangle(souris.x,hauteurMenu,largeur,hauteur,couleur)
-                if souris.x>=debut[0]:
-                    fillRectangle(debut[0],hauteurMenu,largeur,hauteur,couleur)
-            sleep(0.01)
-        if souris.button == 0 :
-            boutonSouris(1)
-            --------------
-
-#DRAFT FOR 3.6 AND 3.7------------------------------- 
-def ajouterRectangle(image,rectangle,couleur):
-    image=imageOriginale
+def ajouterRectangle(image, rectangle, couleur):
+    tab = image
     coin1 = rectangle.coin1
     coin2 = rectangle.coin2
     for x in range(coin1.x, coin2.x + 1):
-        for y in range(coin1.y, coin2.y):
-            image[x][y] = setPixel(x, y)
+        for y in range(coin1.y, coin2.y + 1):
+            image[x][y] = couleur
     return image
 
-couleurChoisie="#fff"
 
-def traiterProchainClic(boutons):
-    tab=imageOriginale
+def traiterProchainClic():
+    couleur = couleurDefaut
+    tab = imageOriginale()
     while True:
-        souris=getMouse()           
-        
-        if souris.button==1 and souris.y>hauteurMenu:
-            dessinerRectangleFlottant(tab, debut, couleur)
-
-        elif souris.button==1 and souris.y<=hauteurMenu:
-            position=struct(x=souris.x,y=souris.y)
-            for _ in range(boutons):
-                trouverBoutons(boutons,position)
-                if None:
-                    break
-                elif True:
-                    return boutons
-                if boutons==0:
-                    clear()
-                elif boutons==1:
-                    couleurChoisie:couleur[0]
-                elif boutons==2:
-                    couleurChoisie:couleur[1]
-                elif boutons==3:
-                    couleurChoisie:couleur[2]
-                elif boutons==4:
-                    couleurChoisie:couleur[3]
-                elif boutons==5:
-                    couleurChoisie:couleur[4]        
-                elif boutons==6:
-                    couleurChoisie:couleur[5]
-                elif boutons==7:
-                    couleurChoisie:couleur[6]
-                elif boutons==8:
-                    couleurChoisie:couleur[7]        
-                              
-        elif souris.button==0:
+        souris = getMouse()
+        if souris.button == 1:
+            position = (souris.x, souris.y)
+            couleurs = [getPixel(souris.x, souris.y)]
+            boutons = creerBoutons(couleurs, taille, espace, couleur)
+            etat = trouverBouton(boutons, position)
+            if etat == True:
+                couleur = couleurs[0]
+            elif position[0] and position[1] in range(espace, espace+taille+1):
+                clear()
+            elif souris.y in range(hauteurMenu + 1,hauteur):
+                debut = (souris.x, souris.y)
+                dessinerRectangleFlottant(tab, debut, couleur)
+            boutonSouris(0)
+        if souris.button == 0:
             boutonSouris(1)
---------------------------------------
+    
