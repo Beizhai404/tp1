@@ -7,11 +7,10 @@ espace = 6
 nombreCouleur = 8
 hauteurMenu = 24
 couleurDefaut = "#fff"
-
+tab = []
 
 def carre(x, y, largeur, hauteur, numbre):
     fillRectangle(x, y, largeur, hauteur, couleur[numbre])
-    
     
 def boutonEffacer(x, y):
     fillRectangle(x, x, taille, taille, couleurDefaut)
@@ -21,10 +20,8 @@ def boutonEffacer(x, y):
         x += 1
         y -= 1
 
-
 def clear():
     fillRectangle(0, hauteurMenu, largeur, hauteur-hauteurMenu, couleurDefaut)
-        
         
 def cadre(x, y, largeur, hauteur):
     fillRectangle(x, y, largeur, hauteur, "#000")
@@ -71,9 +68,8 @@ def trouverBouton(boutons, position):
     if coin1_x <= position[0] <= coin2_x and coin1_y <= position[1] <= coin2_y\
                             and boutons[1].couleur != "#888":
         return True
-    else:
+    elif boutons[1].effacer == True:
         return None
-    
     
 def boutonSouris(x):
     while True :
@@ -82,8 +78,7 @@ def boutonSouris(x):
             return souris
         sleep(0.01)
          
-         
-def rectangle(souris, largeur, hauteur, debut, couleur):
+def tracerRectangle(souris, largeur, hauteur, debut, couleur):
     if souris.x <= debut[0] and hauteurMenu <= souris.y <= debut[1]:
         fillRectangle(souris.x, souris.y, largeur, hauteur,couleur)
     elif souris.x <= debut[0] and souris.y > debut[1]:
@@ -99,39 +94,49 @@ def rectangle(souris, largeur, hauteur, debut, couleur):
         hauteur = abs(hauteurMenu - debut[1]) + 1
         fillRectangle(debut[0], hauteurMenu, largeur, hauteur,couleur)
         
-        
 def imageOriginale():
     imageOriginale = []
     for x in range(0,largeur):
         imageOriginale.append([])
         for y in range(0,hauteur):
-            imageOriginale[x].append([])
+            imageOriginale[x].append(getPixel(x, y))
     return imageOriginale  
 
-
+def past(tab):
+    for i in range(len(tab)):
+        x = tab[i][0]
+        y = tab[i][1]
+        largeur = tab[i][2]
+        hauteur = tab[i][3]
+        couleur = tab[i][4]
+        tracerRectangle(x, y, largeur, hauteur, couleur)
 
 def dessinerRectangleFlottant(imageOriginale, debut, couleur):
-    tab = imageOriginale
     while True:
         souris = getMouse()
         largeur = abs(souris.x - debut[0])+1
         hauteur = abs(souris.y - debut[1])+1
         if souris.button == 1:
             clear()
-            rectangle(souris, largeur, hauteur, debut, couleur)
+            past(tab)
+            tracerRectangle(souris, largeur, hauteur, debut, couleur)
             sleep(0.01)
         if souris.button == 0:
+            if souris.x in range(espace,espace+taille+1) and\
+            souris.y in range(espace,espace+taille+1):
+                tab.clear()
+            else:
+                tab.extend([[souris, largeur, hauteur, debut, couleur]])
             break
- 
- 
+            
+            
 def restaurerImage(imageOriginale, rectangle):
     tab = imageOriginale
     coin1 = rectangle.coin1
     coin2 = rectangle.coin2
-    for x in range(coin1.x, coin2.x + 1):
-        for y in range(coin1.y, coin2.y + 1):
-            setPixel(x, y, tab[x][y])
-    
+    largeur = coin2.x - coin1.x
+    hauteur = coin2.y - coin1.y
+    fillRectangle(coin1.x, coin1.y, largeur, hauteur,tab[coin1.x][coin1.y])
     
 def ajouterRectangle(image, rectangle, couleur):
     tab = image
@@ -141,7 +146,6 @@ def ajouterRectangle(image, rectangle, couleur):
         for y in range(coin1.y, coin2.y + 1):
             image[x][y] = couleur
     return image
-
 
 def traiterProchainClic(boutons):
     couleur = couleurDefaut
@@ -155,12 +159,21 @@ def traiterProchainClic(boutons):
             etat = trouverBouton(boutons, position)
             if etat == True:
                 couleur = couleurs[0]
-            elif position[0] and position[1] in range(espace, espace+taille+1):
-                clear()
             elif souris.y in range(hauteurMenu + 1,hauteur):
                 debut = (souris.x, souris.y)
                 dessinerRectangleFlottant(tab, debut, couleur)
+            elif position[0] in range(espace,espace+taille+1) and\
+                 position[1] in range(espace,espace+taille+1):
+                clear()
             boutonSouris(0)
         if souris.button == 0:
             boutonSouris(1)
     
+
+def dessiner():
+    fenetre(largeur, hauteur)
+    tab = imageOriginale()
+    couleurs = [couleurDefaut]
+    boutons = creerBoutons(couleurs, taille, espace, couleur)
+    while True:
+        traiterProchainClic(boutons)
