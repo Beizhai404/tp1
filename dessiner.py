@@ -102,7 +102,7 @@ def imageOriginale():
             imageOriginale[x].append(getPixel(x, y))
     return imageOriginale  
 
-def past(tab):
+def graphics(tab):
     for i in range(len(tab)):
         x = tab[i][0]
         y = tab[i][1]
@@ -118,7 +118,7 @@ def dessinerRectangleFlottant(imageOriginale, debut, couleur):
         hauteur = abs(souris.y - debut[1])+1
         if souris.button == 1:
             clear()
-            past(tab)
+            graphics(tab)
             tracerRectangle(souris, largeur, hauteur, debut, couleur)
             sleep(0.01)
         if souris.button == 0:
