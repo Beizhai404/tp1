@@ -23,6 +23,7 @@ tab = []               #Tableau donnant les boutons de la barre de menu.
 def bouton(x, y, largeur, hauteur, numbre): #Dessine les carrés de couleur.
     fillRectangle(x, y, largeur, hauteur, couleur[numbre])
 
+    
 def boutonEffacer(x, y): #Dessine le bouton effacer.
     fillRectangle(x, x, taille, taille, couleurDefaut)
     for i in range(x, y):
@@ -30,9 +31,11 @@ def boutonEffacer(x, y): #Dessine le bouton effacer.
         setPixel(i, y - 1, "#f00")#Construit diagonale du coin inférieur gauche
         x += 1 #Pour continuer le X.
         y -= 1 #Pour continuer le X. 
-        
+       
+    
 def clear():#Fonction du bouton effacer pour effacer le contenu de la fenêtre.
     fillRectangle(0, hauteurMenu, largeur, hauteur-hauteurMenu, couleurDefaut)
+        
         
 def cadre(x, y, largeur, hauteur): #Construit le cadre autour des carrés.
     fillRectangle(x, y, largeur, hauteur, "#000")
@@ -53,6 +56,7 @@ def fenetre(largeur, hauteur): #Dessiner la fenêtre, barre du menu et boutons.
     boutonEffacer(espace, espace + taille)
 #La boucle in range dessine chaque carré du menu et fait appel aux fonctions
 #cadre pour tous les cadres et carré pour lui donner la couleur établie. 
+    
     
 #La fonction creerBoutons retourne les informations utiles de chaque bouton
 #la forme d'un tableau d'enregistrements.
@@ -87,6 +91,7 @@ def trouverBouton(boutons, position):
     elif boutons[1].effacer == True:
         return None  #Aucun bouton se trouve aux coordonées fournies.
     
+    
 def boutonSouris(x):    #Permet de constamment évaluer le programme lorsque
     while True :        #le bouton principal de la souris n'est pas enfoncé.
         souris = getMouse()
@@ -94,6 +99,7 @@ def boutonSouris(x):    #Permet de constamment évaluer le programme lorsque
             return souris
         sleep(0.01)     #Nouvelle évaluation de souris à chaque 0.01 seconde.
 
+        
 #tracerRectangle trace un rectangle selon la position du clic initial et la 
 #position de la souris lorsque le bouton est maintenu enfoncé.
 def tracerRectangle(souris, largeur, hauteur, debut, couleur):
@@ -119,6 +125,7 @@ def tracerRectangle(souris, largeur, hauteur, debut, couleur):
         fillRectangle(debut[0], hauteurMenu, largeur, hauteur,couleur)
       #Coin supérieur gauche donné par le x du clic initial et hauteur du menu
       # car on ne peut dessiner sur le menu directement.
+        
         
 #Procédure dessinerRectangleFlottant anime le rectangle flottant alors que le
 #bouton de la souris de l'utilisateur est enfoncé.        
@@ -149,6 +156,7 @@ def dessinerRectangleFlottant(imageOriginale, debut, couleur):
             ajouterRectangle(tab, rectangle, couleur) #Modification de tab.
             break
             
+            
 #Procédure restaurerImage dessine une section rectangulaire de l'image 
 #imageOriginale dans la grille de pixels.           
 def restaurerImage(imageOriginale, rectangle):
@@ -162,6 +170,7 @@ def restaurerImage(imageOriginale, rectangle):
         tracerRectangle(x, y, largeur, hauteur, couleur) 
         #Appel au dessin avec nouveaux paramètres.                                            
 
+        
 #Procédure modifiant une section rectangulaire du paramètre image. 
 def ajouterRectangle(image, rectangle, couleur):
     tab = image
@@ -174,6 +183,7 @@ def ajouterRectangle(image, rectangle, couleur):
     tab.extend([[struct(x = coin2_x, y = coin2_y), largeur, hauteur,\
                  (coin1_x, coin1_y), couleur]]) 
     return tab #Retourne un tableau avec couleur pour pixels du rectangle.
+
 
 #Procédure attendant le prochain clic de l'utilisateur.
 def traiterProchainClic(boutons): 
@@ -199,6 +209,7 @@ def traiterProchainClic(boutons):
             boutonSouris(0)  
         if souris.button == 0:  #Aucun clic, donc retour à l'évaluation 
             boutonSouris(1)     #continue du programme avec boutonSouris.
+    
     
 def dessiner(): #Procédure démarrant l'éditeur graphique.
     fenetre(largeur, hauteur) 
