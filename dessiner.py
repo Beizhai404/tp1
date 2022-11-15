@@ -94,22 +94,6 @@ def tracerRectangle(souris, largeur, hauteur, debut, couleur):
         hauteur = abs(hauteurMenu - debut[1]) + 1
         fillRectangle(debut[0], hauteurMenu, largeur, hauteur,couleur)
         
-def imageOriginale():
-    imageOriginale = []
-    for x in range(0,largeur):
-        imageOriginale.append([])
-        for y in range(0,hauteur):
-            imageOriginale[x].append(getPixel(x, y))
-    return imageOriginale  
-
-def graphics(tab):
-    for i in range(len(tab)):
-        x = tab[i][0]
-        y = tab[i][1]
-        largeur = tab[i][2]
-        hauteur = tab[i][3]
-        couleur = tab[i][4]
-        tracerRectangle(x, y, largeur, hauteur, couleur)
 
 def dessinerRectangleFlottant(imageOriginale, debut, couleur):
     while True:
@@ -118,30 +102,40 @@ def dessinerRectangleFlottant(imageOriginale, debut, couleur):
         hauteur = abs(souris.y - debut[1])+1
         if souris.button == 1:
             clear()
-            graphics(tab)
+            rectangle = struct(coin1 = struct(x = min(souris.x, debut[0]),
+                                        y = min(souris.y, debut[1])),
+                               coin2 = struct(x = max(souris.x, debut[0]),
+                                        y = max(souris.y, debut[1])))
+            restaurerImage(imageOriginale, rectangle)
             tracerRectangle(souris, largeur, hauteur, debut, couleur)
             sleep(0.01)
         if souris.button == 0:
-            tab.extend([[souris, largeur, hauteur, debut, couleur]])
+            ajouterRectangle(tab, rectangle, couleur)
             break
             
             
 def restaurerImage(imageOriginale, rectangle):
     tab = imageOriginale
-    coin1 = rectangle.coin1
-    coin2 = rectangle.coin2
-    largeur = coin2.x - coin1.x
-    hauteur = coin2.y - coin1.y
-    fillRectangle(coin1.x, coin1.y, largeur, hauteur,tab[coin1.x][coin1.y])
+    for i in range(len(tab)):
+        x = tab[i][0]
+        y = tab[i][1]
+        largeur = tab[i][2]
+        hauteur = tab[i][3]
+        couleur = tab[i][4]
+        tracerRectangle(x, y, largeur, hauteur, couleur)
+
     
 def ajouterRectangle(image, rectangle, couleur):
     tab = image
-    coin1 = rectangle.coin1
-    coin2 = rectangle.coin2
-    for x in range(coin1.x, coin2.x + 1):
-        for y in range(coin1.y, coin2.y + 1):
-            image[x][y] = couleur
-    return image
+    coin1_x = rectangle.coin1.x
+    coin1_y = rectangle.coin1.y 
+    coin2_x = rectangle.coin2.x
+    coin2_y = rectangle.coin2.y
+    largeur = coin2_x - coin1_x + 1
+    hauteur = coin2_y - coin1_y + 1
+    tab.extend([[struct(x = coin2_x, y = coin2_y), largeur, hauteur,\
+                 (coin1_x, coin1_y), couleur]])
+    return tab
 
 def traiterProchainClic(boutons):
     couleur = couleurDefaut
@@ -168,8 +162,8 @@ def traiterProchainClic(boutons):
 
 def dessiner():
     fenetre(largeur, hauteur)
-    tab = imageOriginale()
     couleurs = [couleurDefaut]
     boutons = creerBoutons(couleurs, taille, espace, couleur)
     while True:
         traiterProchainClic(boutons)
+ 
