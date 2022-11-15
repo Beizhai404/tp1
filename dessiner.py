@@ -122,11 +122,7 @@ def dessinerRectangleFlottant(imageOriginale, debut, couleur):
             tracerRectangle(souris, largeur, hauteur, debut, couleur)
             sleep(0.01)
         if souris.button == 0:
-            if souris.x in range(espace,espace+taille+1) and\
-            souris.y in range(espace,espace+taille+1):
-                tab.clear()
-            else:
-                tab.extend([[souris, largeur, hauteur, debut, couleur]])
+            tab.extend([[souris, largeur, hauteur, debut, couleur]])
             break
             
             
@@ -149,7 +145,6 @@ def ajouterRectangle(image, rectangle, couleur):
 
 def traiterProchainClic(boutons):
     couleur = couleurDefaut
-    tab = imageOriginale()
     while True:
         souris = getMouse()
         if souris.button == 1:
@@ -159,14 +154,15 @@ def traiterProchainClic(boutons):
             etat = trouverBouton(boutons, position)
             if etat == True:
                 couleur = couleurs[0]
-            elif souris.y in range(hauteurMenu + 1,hauteur):
-                debut = (souris.x, souris.y)
-                dessinerRectangleFlottant(tab, debut, couleur)
             elif position[0] in range(espace,espace+taille+1) and\
                  position[1] in range(espace,espace+taille+1):
                 clear()
-            boutonSouris(0)
-        if souris.button == 0:
+                tab.clear()
+            elif souris.y in range(hauteurMenu + 1,hauteur):
+                debut = (souris.x, souris.y)
+                dessinerRectangleFlottant(tab, debut, couleur)
+            boutonSouris(0)  
+        if souris.button == 0:   
             boutonSouris(1)
     
 
