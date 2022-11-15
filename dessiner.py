@@ -140,6 +140,12 @@ def dessinerRectangleFlottant(imageOriginale, debut, couleur):
             #Appel pour dessin.
             sleep(0.01)
         if souris.button == 0: #Aucun bouton n'est appuyé.
+            if souris.y < hauteurMenu:
+                souris.y = hauteurMenu
+            rectangle = struct(coin1 = struct(x = min(souris.x, debut[0]),
+                                        y = min(souris.y, debut[1])),
+                               coin2 = struct(x = max(souris.x, debut[0]),
+                                        y = max(souris.y, debut[1])))
             ajouterRectangle(tab, rectangle, couleur) #Modification de tab.
             break
             
