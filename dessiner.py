@@ -8,17 +8,17 @@
 #de différentes tailles et différentes couleurs à l'aide de la souris.
 
 
-#Ce sont des variables globales pour une modification facile
 couleur = ["#fff", "#000", "#f00", "#ff0", "#0f0", "#00f", "#f0f", "#888"]
-largeur = 180
-hauteur = 120
-taille = 12
-longueurCadre = 1
-espace = 6
-nombreCouleur = 8
-hauteurMenu = 24
-couleurDefaut = "#fff"
-tab = []
+#Les couleurs possibles en hexadécimal selon la syntaxe des couleurs du Web.
+largeur = 180          #Largeur de la résolution en pixels.
+hauteur = 120          #Hauteur de la résolution en pixels.
+taille = 12            #Taille d'un côté des carrés de couleur en pixels.
+longueurCadre = 1      #Taille de la bordure des carrés de couleur en pixels.
+espace = 6             #Distance entre chaque carré de couleur.
+nombreCouleur = 8      #Nombre de couleurs choisies.
+hauteurMenu = 24       #Hauteur de la barre de menu en pixels.
+couleurDefaut = "#fff" #Couleur par défaut de la fenêtre.
+tab = []               #Tableau donnant les boutons de la barre de menu.
 
 def bouton(x, y, largeur, hauteur, numbre):
     fillRectangle(x, y, largeur, hauteur, couleur[numbre])
