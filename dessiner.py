@@ -1,3 +1,14 @@
+#Auteur : #Zheng Qin (20151658)
+#Auteur : 
+#Date : Nov 13 2022
+#
+#Ce programme est un logiciel d'édition graphique s'apparentant 
+#à une version simplifiée du logiciel Microsoft Paint. 
+#Ce logiciel permettra à l'utilisateur de dessiner des rectangles 
+#de différentes tailles et différentes couleurs à l'aide de la souris.
+
+
+#Ce sont des variables globales pour une modification facile
 couleur = ["#fff", "#000", "#f00", "#ff0", "#0f0", "#00f", "#f0f", "#888"]
 largeur = 180
 hauteur = 120
@@ -9,7 +20,7 @@ hauteurMenu = 24
 couleurDefaut = "#fff"
 tab = []
 
-def carre(x, y, largeur, hauteur, numbre):
+def bouton(x, y, largeur, hauteur, numbre):
     fillRectangle(x, y, largeur, hauteur, couleur[numbre])
     
 def boutonEffacer(x, y):
@@ -36,7 +47,7 @@ def fenetre(largeur, hauteur):
     fillRectangle(0, 0, largeur, hauteurMenu, "#888")
     for x in range(espace, nombreCouleur * distCoins, distCoins):
         cadre(x - 1, espace - 1, longueurBouton, longueurBouton)
-        carre(x, espace, taille, taille, i)
+        bouton(x, espace, taille, taille, i)
         i += 1
     boutonEffacer(espace, espace + taille)
     
@@ -166,4 +177,3 @@ def dessiner():
     boutons = creerBoutons(couleurs, taille, espace, couleur)
     while True:
         traiterProchainClic(boutons)
- 
