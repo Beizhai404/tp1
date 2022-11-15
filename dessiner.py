@@ -1,5 +1,5 @@
 #Auteur : Zheng Qin (20151658)
-#Auteur : 
+#Auteur : Octavian Mocanu (20157889)
 #Date : Nov 13 2022
 #
 #Ce programme est un logiciel d'édition graphique s'apparentant 
