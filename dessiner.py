@@ -1,4 +1,4 @@
-#Auteur : #Zheng Qin (20151658)
+#Auteur : Zheng Qin (20151658)
 #Auteur : 
 #Date : Nov 13 2022
 #
@@ -110,7 +110,7 @@ def tracerRectangle(souris, largeur, hauteur, debut, couleur):
         fillRectangle(debut[0], debut[1], largeur, hauteur,couleur)
       #Coin supérieur gauche donné par le clic initial seulement. 
     elif souris.x <= debut[0] and souris.y < hauteurMenu:
-        hauteur = abs(hauteurMenu - debut[1]) + 1.  
+        hauteur = abs(hauteurMenu - debut[1]) + 1  
         fillRectangle(souris.x, hauteurMenu, largeur, hauteur,couleur)
       #Coin supérieur gauche donné par la souris.x et hauteur du menu, car on
       #ne peut dessiner sur le menu directement.
@@ -200,3 +200,104 @@ def dessiner(): #Procédure démarrant l'éditeur graphique.
     boutons = creerBoutons(couleurs, taille, espace, couleur)
     while True:
         traiterProchainClic(boutons)
+        
+
+def testDessiner(): #Procédure tests unitaires pour l'ensemble du programme.
+                    #Mettre en commentaire pour désactiver.
+    #Tests unitaires creerBoutons
+    #Cas normal.
+    assert creerBoutons(["#0f0"], 12, 6, "#fff") == \
+    [struct(coin1=struct(x=24, y=6), coin2=struct(x=36, y=18), 
+            couleur='#fff', effacer=True),
+     struct(coin1=struct(x=96, y=6), coin2=struct(x=108, y=18), 
+            couleur='#0f0', effacer=False)]
+    #Cas avec fond différent pour Effacer.
+    assert creerBoutons(["#0f0"], 12, 6, "#000") == \
+    [struct(coin1=struct(x=24, y=6), coin2=struct(x=36, y=18),
+            couleur='#000', effacer=True),
+     struct(coin1=struct(x=96, y=6), coin2=struct(x=108, y=18),
+            couleur='#0f0', effacer=False)]
+    #Cas avec hauteur négative.
+    assert creerBoutons(["#0f0"], 12, -6, "#fff") == \
+    [struct(coin1=struct(x=0, y=-6), coin2=struct(x=12, y=6),
+            couleur='#fff', effacer=True),
+    struct(coin1=struct(x=24, y=-6), coin2=struct(x=36, y=6),
+           couleur='#0f0', effacer=False)]
+    #Cas avec 0,0.
+    assert creerBoutons(["#f00"], 0, 0, "#fff") == \
+    [struct(coin1=struct(x=0, y=0), coin2=struct(x=0, y=0),
+            couleur='#fff', effacer=True),
+     struct(coin1=struct(x=0, y=0), coin2=struct(x=0, y=0),
+            couleur='#f00', effacer=False)]
+    #Cas avec nombres non entiers.  
+    assert creerBoutons(["#0f0"], -12.5, -6.5, "#fff") == \
+    [struct(coin1=struct(x=-25.5, y=-6.5), coin2=struct(x=-38.0, y=-19.0),
+     couleur='#fff', effacer=True), 
+     struct(coin1=struct(x=-101.5, y=-6.5),coin2=struct(x=-114.0, y=-19.0),
+     couleur='#0f0', effacer=False)]      
+    
+    #Tests unitaires trouverBouton
+    boutons = [struct(coin1 = struct(x = 24, y = 6), 
+                      coin2 = struct(x = 36, y = 18), couleur = "#fff", 
+                      effacer = True),
+               struct(coin1 = struct(x = 60, y = 6), 
+                      coin2 = struct(x = 72, y = 18), couleur = "#f00", 
+                      effacer = False)]
+    assert trouverBouton(boutons, (9, 11)) == None          #Bouton effacer.
+    assert trouverBouton(boutons, (63, 11)) == True         #Bouton couleur
+    assert trouverBouton(boutons, (163, 10)) == None        #Dans le menu.
+    assert trouverBouton(boutons, (90, 63)) == None         #Espace dessin.
+    assert trouverBouton(boutons, (12, 16)) == None         #Sur cadre.
+    
+    #Tests unitaires restaurerImage
+    setScreenMode(4,4)
+    t ='#f00#f00#000#000\n#f00#f00#000#000\n#000#000#000#000\n#000#000#000#000'
+    rectangle = struct(coin1 = struct(x=0, y=0), coin2 = struct(x=1, y=1))
+    imageOriginale = [[struct(x = 1, y = 1), 2, 2, (0, 0), '#f00']]
+    restaurerImage(imageOriginale, rectangle)
+    assert exportScreen() == t
+    t ='#f00#f00#f00#000\n#f00#f00#f00#000\n#000#f00#f00#000\n#000#000#000#000'
+    rectangle = struct(coin1 = struct(x=0, y=0), coin2 = struct(x=1, y=1))
+    imageOriginale = [[struct(x = 2, y = 2), 2, 3, (1, 0), '#f00']]
+    restaurerImage(imageOriginale, rectangle)
+    assert exportScreen() == t
+    t ='#f00#f00#f00#000\n#f00#f00#fff#fff\n#000#f00#fff#fff\n#000#000#fff#fff'
+    rectangle = struct(coin1 = struct(x=0, y=0), coin2 = struct(x=1, y=1))
+    imageOriginale = [[struct(x = 3, y = 3), 2, 3 , (2, 1), '#fff']]
+    restaurerImage(imageOriginale, rectangle)
+    assert exportScreen() == t
+    t ='#f00#f00#f00#000\n#f00#ff0#ff0#fff\n#000#ff0#ff0#fff\n#000#000#fff#fff'
+    rectangle = struct(coin1 = struct(x=0, y=0), coin2 = struct(x=1, y=1))
+    imageOriginale = [[struct(x = 2, y = 2), 2, 2, (1, 1), '#ff0']]
+    restaurerImage(imageOriginale, rectangle)
+    assert exportScreen() == t
+    t ='#f00#f00#f00#000\n#f00#ff0#ff0#fff\n#0f0#0f0#ff0#fff\n#0f0#0f0#fff#fff'
+    rectangle = struct(coin1 = struct(x=0, y=0), coin2 = struct(x=1, y=1))
+    imageOriginale = [[struct(x = 1, y = 4), 2, 2, (0, 2), '#0f0']]
+    restaurerImage(imageOriginale, rectangle)
+    assert exportScreen() == t
+    
+    #Tests unitaires ajouterRectangle
+    assert ajouterRectangle([["#fff"] * 4] * 3,struct(coin1 = struct(x=1, y=1),
+    coin2=struct(x = 2,y = 2)),"#000")== [['#fff', '#fff', '#fff', '#fff'],
+    ['#fff', '#fff', '#fff', '#fff'], ['#fff', '#fff', '#fff', '#fff'],
+    [struct(x = 2, y = 2), 2, 2, (1, 1), '#000']]
+    assert ajouterRectangle([["#fff"] * 4] * 3,struct(coin1 = struct(x=1, y=1),
+    coin2=struct(x = 2,y = 3)),"#000")==[['#fff', '#fff', '#fff', '#fff'],
+    ['#fff', '#fff', '#fff', '#fff'], ['#fff', '#fff', '#fff', '#fff'], 
+    [struct(x = 2, y = 3), 2, 3, (1, 1), '#000']]
+    assert ajouterRectangle([["#fff"] * 4] * 3,struct(coin1=struct(x=10, y=10),
+    coin2=struct(x = -1, y = -1)),"#000")==[['#fff', '#fff', '#fff', '#fff'],
+    ['#fff', '#fff', '#fff', '#fff'], ['#fff', '#fff', '#fff', '#fff'],
+    [struct(x = -1, y = -1), -10, -10, (10, 10), '#000']]
+    assert ajouterRectangle([["#fff"] * 4] * 3,struct(coin1=struct(x=23, y=33),
+    coin2=struct(x = 13, y = 23)),"#000")==[['#fff', '#fff', '#fff', '#fff'],
+    ['#fff', '#fff', '#fff', '#fff'], ['#fff', '#fff', '#fff', '#fff'],
+    [struct(x = 13, y = 23), -9, -9, (23, 33), '#000']]
+    assert ajouterRectangle([["#fff"] * 4] * 3,struct(coin1=struct(x=5, y=5),
+    coin2=struct(x = 14, y = 24)),"#000")==[['#fff', '#fff', '#fff', '#fff'],
+    ['#fff', '#fff', '#fff', '#fff'], ['#fff', '#fff', '#fff', '#fff'],
+    [struct(x = 14, y = 24), 10, 20, (5, 5), '#000']]
+    
+    
+testDessiner()
